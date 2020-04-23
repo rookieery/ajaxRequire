@@ -1,18 +1,24 @@
 import Ajax from './ajax.js';
 
 class Main {
-    static start() {
-        document.getElementById('ajaxButton').addEventListener('click', Main.clickHandler);
+  static start() {
+    document.getElementById('ajaxButton').addEventListener('click', Main.clickHandler);
+  }
+
+  static async clickHandler() {
+    const url = './package.json';
+    const HTTPMethodType = 'GET';
+    const headerMap = new Map();
+    headerMap.set('Accept', 'application/json');
+    try {
+      const result = await Ajax.getPromiseJSON(url, HTTPMethodType, headerMap);
+      alert(result);
+    } catch (error) {
+      alert(error);
     }
-    static clickHandler() {
-        const url = './package.json';
-        const HTTPMethodType = 'GET';
-        let headerMap = new Map();
-        headerMap.set('Accept', 'application/json');
-        Ajax.makePromiseRequest(url, HTTPMethodType, headerMap);
-    }
+  }
 }
 
 window.onload = function () {
-    Main.start();
+  Main.start();
 };
