@@ -2,12 +2,14 @@ export default class Ajax {
   static getPromiseJSON(url, HTTPMethodType, headerMap) {
     const promise = new Promise(((resolve, reject) => {
       const handler = function () {
-        if (this.status === 200) {
+        if (this.status >= 200 && this.status <= 299) {
           resolve(this.response);
-        } else if (this.status === 404) {
-          reject(new Error(`${404} = Path file not found!`));
-        } else if (this.status === 500) {
-          reject(new Error(`${500} = Server Error!`));
+        } else if (this.status >= 300 && this.status <= 399) {
+          reject(new Error(`${this.status} = Redirects!`));
+        } else if (this.status >= 400 && this.status <= 499) {
+          reject(new Error(`${this.status} = Client Error!`));
+        } else if (this.status >= 500 && this.status <= 599) {
+          reject(new Error(`${this.status} = Server Error!`));
         }
       };
       const client = new XMLHttpRequest();
